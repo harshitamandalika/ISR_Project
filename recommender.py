@@ -15,4 +15,5 @@ def recommend_papers_tfidf(research_focus, papers_df, disliked_ids=None, top_n=5
 
     # Return top 5 papers ranked by similarity
     top_matches = sim_scores.argsort()[-top_n:][::-1]
+    print(sorted(sim_scores)[-top_n:][::-1])
     return papers_df.iloc[top_matches]
