@@ -1,7 +1,7 @@
 import json
 import os
 
-path = 'data/user_profiles.json'
+path = 'ISR_Project/data/user_profiles.json'
 
 def create_user_profiles():
     profiles = {
@@ -17,7 +17,7 @@ def create_user_profiles():
         "user10": {"research_focus": "image generation generative models artistic synthesis visual creativity", "liked_papers": [], "disliked_papers": []}
     }
 
-    os.makedirs('data', exist_ok=True)
+    os.makedirs('ISR_Project/data', exist_ok=True)
     with open(path, 'w') as f:
         json.dump(profiles, f, indent=4)
     #print(f"User profiles saved to {path}")
@@ -25,3 +25,25 @@ def create_user_profiles():
 def load_user_profiles(filepath=path):
     with open(filepath, 'r') as f:
         return json.load(f)
+    
+def save_user_profiles(profiles, filepath=path):
+    with open(filepath, 'w') as f:
+        json.dump(profiles, f, indent=4)
+
+def update_user_feedback(user_id, feedback, profiles):
+    print("Feedback:", feedback)
+    user = profiles.get(user_id, {})
+    user.setdefault('liked_papers', [])
+    user.setdefault('disliked_papers', [])
+
+    for pid in feedback['liked']:
+        if pid not in user['liked_papers']:
+            user['liked_papers'].append(pid)
+
+    for pid in feedback['disliked']:
+        if pid not in user['disliked_papers']:
+            user['disliked_papers'].append(pid)
+
+    profiles[user_id] = user
+    print("After updating ----- ")
+    print(profiles[user_id])

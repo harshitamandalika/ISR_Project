@@ -58,4 +58,4 @@ def fetch_recent_cv_papers(keywords, max_result=100):
         paper_list.append(paper_dict)
     
     papers_df = pd.DataFrame(paper_list)
-    papers_df.to_csv('data/papers.csv')
+    papers_df.to_csv('ISR_Project/data/papers.csv')
