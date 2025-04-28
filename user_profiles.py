@@ -1,23 +1,16 @@
 import json
 import os
 
-path = 'ISR_Project/data/user_profiles.json'
+path = 'data/user_profiles.json'
 
 def create_user_profiles():
     profiles = {
-        "user1": {"research_focus": "image classification deep learning neural networks", "liked_papers": [], "disliked_papers": []},
-        "user2": {"research_focus": "object detection real time images bounding boxes detection performance", "liked_papers": [], "disliked_papers": []},
-        "user3": {"research_focus": "segmentation medical images pixel labeling annotation", "liked_papers": [], "disliked_papers": []},
-        "user4": {"research_focus": "3D vision reconstruction depth sensors spatial analysis geometry", "liked_papers": [], "disliked_papers": []},
-        "user5": {"research_focus": "transformers visual attention representation learning images", "liked_papers": [], "disliked_papers": []},
-        "user6": {"research_focus": "healthcare imaging diagnostic tools brain scan chest x-ray mri", "liked_papers": [], "disliked_papers": []},
-        "user7": {"research_focus": "video processing action detection video classification motion tracking", "liked_papers": [], "disliked_papers": []},
-        "user8": {"research_focus": "face analysis face recognition biometric vision human identity", "liked_papers": [], "disliked_papers": []},
-        "user9": {"research_focus": "domain shift visual generalization dataset adaptation few-shot learning", "liked_papers": [], "disliked_papers": []},
-        "user10": {"research_focus": "image generation generative models artistic synthesis visual creativity", "liked_papers": [], "disliked_papers": []}
+        "uday": {'name': 'Uday Vysyaraju', 'email': 'udaysanthoshkgp@gmail.com',"research_focus": "image classification deep learning neural networks", "liked_papers": [], "disliked_papers": []},
+        "sejeong": {'name': 'Sejeong Moon', 'email': 'smoon23@tamu.edu', "research_focus": "transformers visual attention representation learning images", "liked_papers": [], "disliked_papers": []},
+        "harshita": {'name': 'Harshita Mandalika', 'email': 'harshita.mandalika@tamu.edu', "research_focus": "face analysis face recognition biometric vision human identity", "liked_papers": [], "disliked_papers": []},
     }
 
-    os.makedirs('ISR_Project/data', exist_ok=True)
+    os.makedirs('data', exist_ok=True)
     with open(path, 'w') as f:
         json.dump(profiles, f, indent=4)
     #print(f"User profiles saved to {path}")
@@ -25,25 +18,3 @@ def create_user_profiles():
 def load_user_profiles(filepath=path):
     with open(filepath, 'r') as f:
         return json.load(f)
-    
-def save_user_profiles(profiles, filepath=path):
-    with open(filepath, 'w') as f:
-        json.dump(profiles, f, indent=4)
-
-def update_user_feedback(user_id, feedback, profiles):
-    print("Feedback:", feedback)
-    user = profiles.get(user_id, {})
-    user.setdefault('liked_papers', [])
-    user.setdefault('disliked_papers', [])
-
-    for pid in feedback['liked']:
-        if pid not in user['liked_papers']:
-            user['liked_papers'].append(pid)
-
-    for pid in feedback['disliked']:
-        if pid not in user['disliked_papers']:
-            user['disliked_papers'].append(pid)
-
-    profiles[user_id] = user
-    print("After updating ----- ")
-    print(profiles[user_id])
