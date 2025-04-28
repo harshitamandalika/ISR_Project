@@ -13,7 +13,7 @@ def fetch_recent_cv_papers(keywords, max_result=100):
     head = data_list.pop(0)
     
     paper_list = list()
-    
+
     for data in data_list:
         paper_dict = {}
         paper = data.split('\n')
@@ -24,27 +24,43 @@ def fetch_recent_cv_papers(keywords, max_result=100):
         
         # Add published date and title of the paper
         paper_dict['date'] = paper[2].split('<published>')[1].replace('</published>', '')
-        paper_dict['title'] = paper[3].split('<title>')[1].replace('</title>', '')
+        # paper_dict['title'] = paper[3].split('<title>')[1].replace('</title>', '')
+    
+        title = False
+        title_text = ''
         
         abstract = False
-        text = ''
+        abstract_text = ''
         
         author = False
         author_list = list()
         
         # Add abstract and authors of the paper
-        for line in paper[4:]:
+        for line in paper[3:]:
+            if ('<title>' in line) & ('</title>' in line):
+                line = line.split('<title>')[1]
+                title_text = line.replace('<title>', '').replace('</title>', '').strip()
+                paper_dict['title'] = title_text
+            elif '<title>' in line:
+                title = True
+                line = line.split('<title>')[1]
+            elif '</title>' in line:
+                title_text += line.replace('</title>', '').strip()
+                paper_dict['title'] = title_text
+                title = False
+            if title:
+                title_text += line.strip()
+                title_text += ' '
         
             if '<summary>' in line:
                 abstract = True
                 line = line.split(' <summary>')[1]
             elif '</summary>' in line:
                 abstract = False
-                paper_dict['abstract'] = text[:-1]
-                
+                paper_dict['abstract'] = abstract_text[:-1]
             if abstract:
-                text += line.strip()
-                text += ' '
+                abstract_text += line.strip()
+                abstract_text += ' '
         
             if '</author>' in line:
                 author = False
@@ -58,4 +74,4 @@ def fetch_recent_cv_papers(keywords, max_result=100):
         paper_list.append(paper_dict)
     
     papers_df = pd.DataFrame(paper_list)
-    papers_df.to_csv('ISR_Project/data/papers.csv')
+    papers_df.to_csv('data/papers.csv')
